@@ -22,7 +22,7 @@ Code structure:
 
 /utils
 
- ----/prepare_PM2.5 ------------ prepare train/test for PM2.5 data. 2010-2013 for train, 2014 for test
+/prepare_PM2.5 ------------ prepare train/test for PM2.5 data. 2010-2013 for train, 2014 for test
 
- ----/VLSM --------------- VLSM algorithm to generate variable length samples (with 0 pad)
+/VLSM --------------- VLSM algorithm to generate variable length samples (with 0 pad)
      
