@@ -1,5 +1,4 @@
 # SSIM Model
-***
 
 This is the SSIM model for *[SSIM—A Deep Learning Approach for Recovering Missing Time Series Sensor Data](https://ieeexplore.ieee.org/document/8681112)*
 
