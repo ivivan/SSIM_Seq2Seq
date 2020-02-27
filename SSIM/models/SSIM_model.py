@@ -52,9 +52,9 @@ class Encoder(nn.Block):
 
 
 
-class Attention(nn.Block):
+class Global_Attention(nn.Block):
     def __init__(self, units, dropout, **kwargs):
-        super(Attention, self).__init__(**kwargs)
+        super(Global_Attention, self).__init__(**kwargs)
         
         self.w_k = nn.Dense(units, activation='tanh',
                             use_bias=False, flatten=False)
@@ -98,7 +98,7 @@ class Decoder(nn.Block):
         self.output_dim = output_dim
         self.num_layers = num_layers
         self.dropout_p = dropout_p
-        self.attention = Attention(self.dec_hid_dim, 
+        self.attention = Global_Attention(self.dec_hid_dim, 
                                    dropout_p)
         
         self.input_dense = nn.Dense(units = self.dec_hid_dim, 
