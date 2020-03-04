@@ -42,8 +42,12 @@ class Encoder(nn.Block):
         hidden = out_states[0]
         cell = out_states[1]
         
-        hidden = nd.concat(hidden[0:2, :, :], hidden[2:, :, :], dim = 2)
-        cell = nd.concat(cell[0:2, :, :], cell[2:, :, :], dim = 2)
+        hidden = nd.concat(hidden[0:self.num_layers, :, :], 
+                           hidden[self.num_layers:, :, :], 
+                           dim = 2)
+        cell = nd.concat(cell[0:self.num_layers, :, :], 
+                         cell[self.num_layers:, :, :], 
+                         dim = 2)
         
         hidden = self.output_dense(hidden)
         cell = self.output_dense(cell)
