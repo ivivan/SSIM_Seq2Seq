@@ -169,7 +169,7 @@ class Decoder(nn.Block):
             outputs = nd.concat(outputs, output_one, dim = 0)
         outputs = outputs.swapaxes(0, 1)
         
-        return outputs.swapaxes(0, 1), [enc_outputs, hidden_state,
+        return outputs, [enc_outputs, hidden_state,
                                         enc_valid_len]
 
 
