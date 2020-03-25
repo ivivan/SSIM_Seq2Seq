@@ -24,4 +24,9 @@ Code structure:
 /prepare_PM2.5 ------------ prepare train/test for PM2.5 data. 2010-2013 for train, 2014 for test
 
 /VLSM --------------- VLSM algorithm to generate variable length samples (with 0 pad)
+
+***
+Link the model's architecture with the equations in the paper
+
+![Explaination](Model.png "SSIM")
      
