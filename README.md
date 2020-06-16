@@ -26,6 +26,12 @@ Code structure:
 /VLSM --------------- VLSM algorithm to generate variable length samples (with 0 pad)
 
 ***
+Three branches:
++ master: PyTorch version
++ newest: PyTorch version (same model as master, training functions slightly changed for other papers )
++ MXnet: MXnet version 
+
+***
 Link the model's architecture with the equations in the paper
 
 ![Explaination](Model.png "SSIM")
