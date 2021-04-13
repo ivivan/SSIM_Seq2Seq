@@ -10,6 +10,13 @@ The Pytorch implementation has not been fully tested.
 Bugs may be fixed later.
 
 ***
+Update 2021
+
+>Datasets from the same WQ monitoring stations can be found on Kaggle as [Real Time Water Quality Data](https://www.kaggle.com/ivivan/real-time-water-quality-data). The measurements may be different from the paper because of sensor replacement. 
+
+>Please check our improved SSIM model. The paper *"A Dual-Head Attention Model for Time Series Data Imputation" has been submitted to "computers and electronics in agriculture"*. The code can be found in repo [DualHeadSSIM](https://github.com/ivivan/DualHeadSSIM).
+
+***
 
 Code structure:
 
