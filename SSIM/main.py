@@ -179,6 +179,39 @@ def evaluate_iteration(model, criterion, x_test, y_test, x_len, x_before_len):
     return loss.item(), loss_mae, loss_RMSLE, loss_RMSE, loss_dtw
 
 
+
+######## check the imputations #############
+
+def predict_ts(model, X_test, y_test, x_len, x_before_len, scaler_y, max_gap_size=6, BATCH_SIZE=1,device=device):
+    model.eval()
+
+    with torch.no_grad():
+
+        X_test = np.transpose(X_test, [1, 0, 2])
+
+        empty_y_tensor = torch.zeros(max_gap_size, BATCH_SIZE,
+                                    1).to(device)
+
+        x_test_tensor = numpy_to_tvar(X_test)
+        x_test_len_tensor = numpy_to_tvar(x_len)
+        x_test_before_len_tensor = numpy_to_tvar(x_before_len)
+
+        output = model(x_test_tensor, empty_y_tensor, x_test_len_tensor, x_test_before_len_tensor, 0)
+
+        output = torch.squeeze(output)
+        output = torch.transpose(output, 0, 1)
+        output = torch.flatten(output)
+
+
+        # scalar
+        output_numpy = output.cpu().data.numpy()
+        output_numpy_origin = scaler_y.inverse_transform(
+        output_numpy.reshape(-1, 1))
+
+    return output_numpy_origin, output_numpy
+
+
+
 if __name__ == "__main__":
 
     # model hyperparameters
@@ -192,16 +225,16 @@ if __name__ == "__main__":
     DEC_Layers = 1
     LR = 0.001  # learning rate
     CLIP = 1
-    EPOCHS = 500
-    BATCH_SIZE = 10
-    N_output=3
+    EPOCHS = 1
+    BATCH_SIZE = 1
+    N_output=6
 
 
 
     ## Different test data
 
     (x_train, y_train, x_train_len, x_train_before_len), (
-    x_test, y_test, x_test_len, x_test_before_len) = test_qld_single_station()
+    x_test, y_test, x_test_len, x_test_before_len),(scaler_x, scaler_y) = test_qld_single_station()
 
     # Model
     glob_attn = Global_Attention(ENC_HID_DIM, DEC_HID_DIM)
@@ -273,7 +306,7 @@ if __name__ == "__main__":
 
     # # prediction
     #
-    model.load_state_dict(torch.load('SSIM/checkpoints/Nitrate_0103_3.pt'))
+    model.load_state_dict(torch.load('SSIM/checkpoints/Nitrate_1012_6.pt'))
     
     test_loss, test_mae, test_rmsle, test_rmse, test_tdi = evaluate(model, criterion, x_test, y_test, x_test_len, x_test_before_len)
     
@@ -284,3 +317,21 @@ if __name__ == "__main__":
     print(f'| RMSLE: {test_rmsle:.4f} | Test PPL: {math.exp(test_rmsle):7.4f} |')
     print(f'| RMSE: {test_rmse:.4f} | Test PPL: {math.exp(test_rmse):7.4f} |')
     print(f'| DTW: {test_tdi:.4f} | Test PPL: {math.exp(test_tdi):7.4f} |')
+
+
+
+    ######## check imputation value #######
+
+    outputs_ori, outputs_scal = predict_ts(model, x_test, y_test, x_test_len, x_test_before_len, scaler_y, max_gap_size=3, BATCH_SIZE=1,device=device)
+
+    print('*************')
+    print('outputs_ori:{}'.format(outputs_ori.shape))
+    print('*************')
+    print('outputs_scal:{}'.format(outputs_scal.shape))
+
+    np.save('SSIM/results/{}_ori'.format('Nitrate6_1012'), outputs_ori)
+    np.save('SSIM/results/{}_scal'.format('Nitrate6_1012'), outputs_scal)
+
+
+
+

@@ -41,11 +41,15 @@ def preprocess_df(df):
     # get data from 2014 and 2015
     # 6，7, 8, 9，10 as train; 11 as test
 
-    df_train_one = df.loc['2019-04-01T00:00':'2019-12-31T23:00'].copy()
-    # df_train_two = df.loc['2015-06-01T00:00':'2015-10-31T23:30'].copy()
+    # df_train_one = df.loc['2019-04-01T00:00':'2019-12-31T23:00'].copy()
+    # # df_train_two = df.loc['2015-06-01T00:00':'2015-10-31T23:30'].copy()
 
-    df_test_one = df.loc['2019-01-01T00:00':'2019-03-31T23:00'].copy()
-    # df_test_two = df.loc['2015-11-01T00:00':'2015-11-30T23:30'].copy()
+    # df_test_one = df.loc['2019-01-01T00:00':'2019-03-31T23:00'].copy()
+    # # df_test_two = df.loc['2015-11-01T00:00':'2015-11-30T23:30'].copy()
+
+    ##### for dual-head comparision #########
+    df_train_one = df.loc['2019-01-01T00:00':'2019-09-30T23:00'].copy()
+    df_test_one = df.loc['2019-10-01T00:00':'2019-12-31T23:00'].copy()
 
 
     # return df_train_one, df_train_two, df_test_one, df_test_two, scaler_x, scaler_y
@@ -95,22 +99,23 @@ def train_test_split_SSIM(x, y, x_len, x_before_len, model_params, SEED):
     x_len = np.delete(x_len, index_list, axis=0)
     x_before_len = np.delete(x_before_len, index_list, axis=0)
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=None,
-                                                        random_state=SEED,
-                                                        shuffle=False)
+    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=None,
+    #                                                     random_state=SEED,
+    #                                                     shuffle=False)
 
-    x_train_len, x_test_len = train_test_split(x_len, test_size=None, random_state=SEED, shuffle=False)
+    # x_train_len, x_test_len = train_test_split(x_len, test_size=None, random_state=SEED, shuffle=False)
 
-    x_train_before_len, x_test_before_len = train_test_split(x_before_len, test_size=None, random_state=SEED,
-                                                             shuffle=False)
+    # x_train_before_len, x_test_before_len = train_test_split(x_before_len, test_size=None, random_state=SEED,
+    #                                                          shuffle=False)
 
-    return x_train, y_train, x_train_len, x_train_before_len
+    # return x_train, y_train, x_train_len, x_train_before_len
+    return x, y, x_len, x_before_len
 
 
 def test_qld_single_station():
     train_sampling_params = {
         'dim_in': 6,
-        'output_length': 3,
+        'output_length': 6,
         'min_before': 10,
         'max_before': 10,
         'min_after': 10,
@@ -120,7 +125,7 @@ def test_qld_single_station():
 
     test_sampling_params = {
         'dim_in': 6,
-        'output_length': 3,
+        'output_length': 6,
         'min_before': 10,
         'max_before': 10,
         'min_after': 10,
@@ -190,19 +195,19 @@ def test_qld_single_station():
     print('x_test_len:{}'.format(x_test_len.shape))
     print('x_test_before_len:{}'.format(x_test_before_len.shape))
 
-    x_train = x_train[:4930]
-    y_train = y_train[:4930]
-    x_test = x_test[:1600]
-    y_test = y_test[:1600]
-    x_train_len = x_train_len[:4930]
-    x_train_before_len = x_train_before_len[:4930]
-    x_test_len = x_test_len[:1600]
-    x_test_before_len = x_test_before_len[:1600]
+    # x_train = x_train[:4930]
+    # y_train = y_train[:4930]
+    # x_test = x_test[:1600]
+    # y_test = y_test[:1600]
+    # x_train_len = x_train_len[:4930]
+    # x_train_before_len = x_train_before_len[:4930]
+    # x_test_len = x_test_len[:1600]
+    # x_test_before_len = x_test_before_len[:1600]
 
 
 
 
-    return (x_train, y_train, x_train_len, x_train_before_len) , (x_test, y_test, x_test_len, x_test_before_len)
+    return (x_train, y_train, x_train_len, x_train_before_len) , (x_test, y_test, x_test_len, x_test_before_len), (scaler_x, scaler_y)
 
 
 
